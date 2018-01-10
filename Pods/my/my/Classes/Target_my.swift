@@ -14,12 +14,15 @@ class Target_my: NSObject {
     func Action_viewController(params:NSDictionary) -> UIViewController {
         
         let block = params["callback"]
-        typealias CallbackType = @convention(block) (NSString) -> Void
+        if block != nil {
+            typealias CallbackType = @convention(block) (NSString) -> Void
+            
+            let blockPtr = UnsafeRawPointer(Unmanaged<AnyObject>.passUnretained(block as AnyObject).toOpaque())
+            let callback = unsafeBitCast(blockPtr, to: CallbackType.self)
+            
+            callback("success")
+        }
         
-        let blockPtr = UnsafeRawPointer(Unmanaged<AnyObject>.passUnretained(block as AnyObject).toOpaque())
-        let callback = unsafeBitCast(blockPtr, to: CallbackType.self)
-        
-        callback("success")
         
         let aViewController = MyViewController()
         return aViewController

@@ -16,18 +16,25 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        let vc = CTMediator.sharedInstance().a_aViewController { (result) in
-            print(result ?? "123")
+        
+        let url = URL(string: "mingshang://my/viewController?id=12&name=bbj")!
+        
+        let vc = CTMediator.sharedInstance().performAction(with: url) { (dic) in
+            print("\(String(describing: dic?.description))")
         }
-//        let acontroller = CTMediator.sharedInstance().a_aViewController{ result in
-//            print(result ?? "default value")
+        
+        if vc is UIViewController {
+            self.navigationController?.pushViewController(vc as! UIViewController, animated: true)
+        }
+        
+//        let vc = CTMediator.sharedInstance().a_aViewController { (result) in
+//            print(result ?? "123")
 //        }
-        self.navigationController?.pushViewController(vc!, animated: true)
+//        self.navigationController?.pushViewController(vc!, animated: true)
     }
 
     override func didReceiveMemoryWarning() {
